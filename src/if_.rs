@@ -263,9 +263,8 @@ fn run_debug_checks(if_blocks: &[Transparent]) {
   }
 
   // Make sure there is no more than 1 <Else />
-  assert_eq!(
-    if_blocks.filter(|block| block.is_else()).count(),
-    1,
+  assert!(
+    if_blocks.filter(|block| block.is_else()).count() <= 1,
     "there must not be more than 1 `<Else />` children within `<If />`"
   );
 }
