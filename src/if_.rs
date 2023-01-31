@@ -1,5 +1,8 @@
 use leptos::*;
-use std::rc::Rc;
+use std::{
+  cell::Cell,
+  rc::Rc,
+};
 
 api_planning! {
   view! { cx,
@@ -115,6 +118,9 @@ where
   #[cfg(debug_assertions)]
   run_debug_checks(&if_blocks);
 
+  let last_rendered_block = Cell::<Option<usize>>::new(None);
+  let child = Cell::new(().into_view(cx));
+
   move || {
     let mut if_blocks = if_blocks
       .iter()
@@ -124,16 +130,37 @@ where
     if_blocks.clone().skip(1).for_each(|block| {
       if let IfBlock::ElseIf { signal, .. } = block {
         signal.with(|_| {});
+
+        last_rendered_block.set(Some(0));
       }
     });
 
     if signal() {
-      if_blocks.next().unwrap().render(cx).into_view(cx)
-    } else if let Some(block) = if_blocks.find(|block| block.is_true()) {
-      block.render(cx).into_view(cx)
+      if last_rendered_block.get() != Some(0) {
+        let new_child = if_blocks.next().unwrap().render(cx).into_view(cx);
+
+        child.set(new_child)
+      }
+    } else if let Some((i, block)) =
+      if_blocks.enumerate().find(|(_, block)| block.is_true())
+    {
+      if last_rendered_block.get() != Some(i + 1) {
+        last_rendered_block.set(Some(i + 1));
+
+        let new_child = block.render(cx).into_view(cx);
+
+        child.set(new_child);
+      }
     } else {
-      ().into_view(cx)
+      last_rendered_block.set(None);
+
+      child.set(().into_view(cx));
     }
+
+    let view = child.take();
+    child.set(view.clone());
+
+    view
   }
 }
 
