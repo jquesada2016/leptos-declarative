@@ -99,6 +99,9 @@ pub fn If<S>(
 where
   S: Fn() -> bool + 'static,
 {
+  // Memoize the signal
+  let signal = create_memo(cx, move |_| signal());
+
   let children = children(cx);
 
   // Get the condition blocks
@@ -159,10 +162,9 @@ pub fn ElseIf<S>(
 where
   S: Fn() -> bool + 'static,
 {
-  IfBlock::ElseIf {
-    signal: Signal::derive(cx, signal),
-    children,
-  }
+  let signal = create_memo(cx, move |_| signal());
+
+  IfBlock::ElseIf { signal, children }
 }
 
 /// This must be the direct child of an [`If`] component, and be the last component.
@@ -187,7 +189,7 @@ pub enum IfBlock {
   /// An `else if` condition, returned by [`ElseIf`].
   ElseIf {
     /// The signal which must evaluate to true to be rendered.
-    signal: Signal<bool>,
+    signal: Memo<bool>,
     /// The children method.
     children: Box<dyn Fn(Scope) -> Fragment>,
   },
