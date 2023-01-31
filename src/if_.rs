@@ -4,9 +4,9 @@ use std::rc::Rc;
 api_planning! {
   view! { cx,
     <If signal=bool_signal>
-      <Show>
+      <Then>
         "thing to show if bool_signal is true"
-      </Show>
+      </Then>
       <ElseIf signal=bool_signal_b>
         "Other thing to show"
       </ElseIf>
@@ -19,14 +19,14 @@ api_planning! {
 
 /// The `if` construct in component form.
 ///
-/// [`Show`] is the only required child component, as it's what will be shown
+/// [`Then`] is the only required child component, as it's what will be shown
 /// when the [`If`]'s signal is true.
 ///
 /// For more docs on allowed child components, check out [`IfProps::children`].
 ///
 /// # Examples
 ///
-/// ### Simple `If`
+/// ### Simple `if`
 /// ```rust
 /// use leptos::*;
 /// use leptos_declarative::*;
@@ -36,7 +36,43 @@ api_planning! {
 ///
 /// view! { cx,
 /// <If signal=a>
-///   <Show>"a is true!"</Show>
+///   <Then>"a is true!"</Then>
+/// </If>
+/// };
+/// # });
+/// ```
+///
+/// ### `if/else`
+/// ```rust
+/// use leptos::*;
+/// use leptos_declarative::*;
+///
+/// # let _ = create_scope(create_runtime(), |cx| {
+/// let (a, _) = create_signal(cx, true);
+///
+/// view! { cx,
+/// <If signal=a>
+///   <Then>"A is true!"</Then>
+///   <Else>"A is false!"</Else>
+/// </If>
+/// };
+/// # });
+/// ```
+///
+/// ### `if/else-if`
+/// ```rust
+/// use leptos::*;
+/// use leptos_declarative::*;
+///
+/// # let _ = create_scope(create_runtime(), |cx| {
+/// let (a, _) = create_signal(cx, true);
+/// let (b, _) = create_signal(cx, false);
+///
+/// view! { cx,
+/// <If signal=a>
+///   <Then>"A is true!"</Then>
+///   <ElseIf signal=b>"B is true!"</ElseIf>
+///   <Else>"Both A and B are false!"</Else>
 /// </If>
 /// };
 /// # });
@@ -49,13 +85,13 @@ pub fn If<S>(
   /// The `if` conditions you would like to evaluate.
   ///
   /// Children must be any
-  /// - [`Show`]
+  /// - [`Then`]
   /// - [`ElseIf`]
   /// - [`Else`]
   ///
   /// Any other child not in the above list will not be rendered.
   ///
-  /// [`Show`] must be present and the first child.
+  /// [`Then`] must be present and the first child.
   ///
   /// [`Else`] must be the last child.
   children: Box<dyn Fn(Scope) -> Fragment>,
@@ -101,7 +137,7 @@ where
 /// This must be the first direct child of [`If`]. It will be shown
 /// iff the signal provided to [`If`] is true.
 #[component(transparent)]
-pub fn Show(
+pub fn Then(
   cx: Scope,
   /// What you want to show when this `if` expression is evaluated.
   children: Box<dyn Fn(Scope) -> Fragment>,
@@ -110,7 +146,7 @@ pub fn Show(
 }
 
 /// This must be the direct child of an [`If`] component, and be placed after
-/// the [`Show`] component. It will render it's children iff the [`If`] signal
+/// the [`Then`] component. It will render it's children iff the [`If`] signal
 /// is false and all other [`ElseIf`] signals are false and this one is true.
 #[component(transparent)]
 pub fn ElseIf<S>(
@@ -140,10 +176,10 @@ pub fn Else(
   IfBlock::Else { children }
 }
 
-/// Represents an if block which is returned by [`Show`], [`ElseIf`]
+/// Represents an if block which is returned by [`Then`], [`ElseIf`]
 /// or [`Else`] components.
 pub enum IfBlock {
-  /// The initial `if` condition, returned by [`Show`].
+  /// The initial `if` condition, returned by [`Then`].
   If {
     /// The children method.
     children: Box<dyn Fn(Scope) -> Fragment>,
