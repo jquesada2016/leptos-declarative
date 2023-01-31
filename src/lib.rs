@@ -1,14 +1,14 @@
-pub fn add(left: usize, right: usize) -> usize {
-  left + right
-}
+#![deny(missing_docs)]
 
-#[cfg(test)]
-mod tests {
-  use super::*;
+//! Declarative components to represent control-flow and other useful
+//! constructs in the [`leptos`] web framework.
 
-  #[test]
-  fn it_works() {
-    let result = add(2, 2);
-    assert_eq!(result, 4);
-  }
-}
+#[macro_use]
+mod util;
+mod if_;
+mod portal;
+mod when;
+
+pub use if_::*;
+pub use portal::*;
+pub use when::*;
