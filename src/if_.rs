@@ -124,28 +124,29 @@ where
   move || {
     let mut if_blocks = if_blocks
       .iter()
-      .filter_map(Transparent::downcast_ref::<IfBlock>);
+      .filter_map(Transparent::downcast_ref::<IfBlock>)
+      .enumerate();
 
     // Subscribe all <ElseIf /> blocks
-    if_blocks.clone().skip(1).for_each(|block| {
+    if_blocks.clone().skip(1).for_each(|(_, block)| {
       if let IfBlock::ElseIf { signal, .. } = block {
         signal.with(|_| {});
-
-        last_rendered_block.set(Some(0));
       }
     });
 
     if signal() {
       if last_rendered_block.get() != Some(0) {
-        let new_child = if_blocks.next().unwrap().render(cx).into_view(cx);
+        last_rendered_block.set(Some(0));
 
-        child.set(new_child)
+        let new_child = if_blocks.next().unwrap().1.render(cx).into_view(cx);
+
+        child.set(new_child);
       }
     } else if let Some((i, block)) =
-      if_blocks.enumerate().find(|(_, block)| block.is_true())
+      if_blocks.find(|(_, block)| block.is_true())
     {
-      if last_rendered_block.get() != Some(i + 1) {
-        last_rendered_block.set(Some(i + 1));
+      if last_rendered_block.get() != Some(i) {
+        last_rendered_block.set(Some(i));
 
         let new_child = block.render(cx).into_view(cx);
 
