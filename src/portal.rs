@@ -91,8 +91,15 @@ where
   });
 }
 
+/// The portal output point. Whatever children the corresponding [`Portal`} with
+/// matching `id` has, will be rendered here.
 #[component]
-fn PortalOutput<T>(cx: Scope, id: T) -> impl IntoView
+pub fn PortalOutput<T>(
+  cx: Scope,
+  /// The type used as an `id`. This must match the `id` of the
+  /// corresponding [`Portal`].
+  id: T,
+) -> impl IntoView
 where
   T: Any,
 {
