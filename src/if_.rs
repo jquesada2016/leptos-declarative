@@ -1,8 +1,5 @@
 use leptos::*;
-use std::{
-  cell::Cell,
-  rc::Rc,
-};
+use std::cell::Cell;
 
 api_planning! {
   view! { cx,
@@ -173,6 +170,8 @@ pub fn Then(
   /// What you want to show when this `if` expression is evaluated.
   children: Box<dyn Fn(Scope) -> Fragment>,
 ) -> impl IntoView {
+  let _ = cx;
+
   IfBlock::If { children }
 }
 
@@ -203,6 +202,8 @@ pub fn Else(
   /// What you want to show when all other signals are false.
   children: Box<dyn Fn(Scope) -> Fragment>,
 ) -> impl IntoView {
+  let _ = cx;
+
   IfBlock::Else { children }
 }
 
@@ -239,10 +240,6 @@ impl IfBlock {
 
   fn is_if(&self) -> bool {
     matches!(self, Self::If { .. })
-  }
-
-  fn is_else_if(&self) -> bool {
-    matches!(self, Self::ElseIf { .. })
   }
 
   fn is_else(&self) -> bool {
