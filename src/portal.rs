@@ -46,6 +46,30 @@ struct PortalCtx(StoredValue<Vec<(TypeId, RwSignal<Option<Children>>)>>);
 ///
 /// This must be located somewhere near the root of your component tree, above
 /// anywhere you would like to use portals.
+///
+/// # Examples
+/// ```rust
+/// use leptos::*;
+/// use leptos_declarative::*;
+///
+/// # let _ = create_scope(create_runtime(), |cx| {
+///
+/// struct PortalId;
+///
+/// view! { cx,
+///   <PortalProvider>
+///     <div>
+///       <h1>"Portal goes here!"</h1>
+///       <PortalOutput id=PortalId />
+///     </div>
+///
+///     <Portal id=PortalId>
+///       <p>"I went through the portal!"</p>
+///     </Portal>
+///   </PortalProvider>
+/// };
+/// # });
+/// ```
 #[component]
 pub fn PortalProvider(
   cx: Scope,
@@ -61,6 +85,30 @@ pub fn PortalProvider(
 /// The portal entry point. Whatever children this component has will be rendered
 /// in the corresponding [`PortalOutput`] with the matching `id`, wherever in your
 /// app that may be.
+///
+/// # Examples
+/// ```rust
+/// use leptos::*;
+/// use leptos_declarative::*;
+///
+/// # let _ = create_scope(create_runtime(), |cx| {
+///
+/// struct PortalId;
+///
+/// view! { cx,
+///   <PortalProvider>
+///     <div>
+///       <h1>"Portal goes here!"</h1>
+///       <PortalOutput id=PortalId />
+///     </div>
+///
+///     <Portal id=PortalId>
+///       <p>"I went through the portal!"</p>
+///     </Portal>
+///   </PortalProvider>
+/// };
+/// # });
+/// ```
 #[component]
 pub fn Portal<T>(
   cx: Scope,
@@ -93,6 +141,30 @@ where
 
 /// The portal output point. Whatever children the corresponding [`Portal`} with
 /// matching `id` has, will be rendered here.
+///
+/// # Examples
+/// ```rust
+/// use leptos::*;
+/// use leptos_declarative::*;
+///
+/// # let _ = create_scope(create_runtime(), |cx| {
+///
+/// struct PortalId;
+///
+/// view! { cx,
+///   <PortalProvider>
+///     <div>
+///       <h1>"Portal goes here!"</h1>
+///       <PortalOutput id=PortalId />
+///     </div>
+///
+///     <Portal id=PortalId>
+///       <p>"I went through the portal!"</p>
+///     </Portal>
+///   </PortalProvider>
+/// };
+/// # });
+/// ```
 #[component]
 pub fn PortalOutput<T>(
   cx: Scope,
