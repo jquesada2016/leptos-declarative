@@ -1,3 +1,5 @@
+// use leptos::*;
+
 api_planning! {
   let (any_signal, _) = create_signal(cx, "apple");
 
@@ -15,3 +17,18 @@ api_planning! {
     </When>
   }
 }
+
+// #[component]
+// fn When<T>(cx: Scope, signal: Signal<T>) -> impl IntoView
+// where
+//   T: 'static,
+// {
+//   todo!()
+// }
+
+// #[component(transparent)]
+// fn Is<F, T>(cx: Scope, f: F) -> impl IntoView
+// where
+//   F: Fn(T) -> bool + 'static,
+// {
+// }

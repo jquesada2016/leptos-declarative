@@ -1,4 +1,5 @@
 use leptos::*;
+use leptos_dom::Transparent;
 use std::cell::Cell;
 
 api_planning! {
