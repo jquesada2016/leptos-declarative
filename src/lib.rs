@@ -9,12 +9,12 @@
 //! - [`If`](if_::If)
 //! - [`Portal`](portal::Portal)
 //!
-//! # Examples
+//! # Usage
 //! For more usage examples, please refer to the respective
 //! components' documentation, but here's a taste.
 //!
-//! # If
-//! /// ```rust
+//! ## If
+//! ```rust
 /// use leptos::*;
 /// use leptos_declarative::prelude::*;
 ///
@@ -31,8 +31,9 @@
 /// };
 /// # });
 /// ```
-/// # Portal
-/// /// ```rust
+/// 
+/// ## Portal
+/// ```rust
 /// use leptos::*;
 /// use leptos_declarative::prelude::*;
 ///
