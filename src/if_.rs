@@ -1,3 +1,7 @@
+//! The `if` construct for [`leptos`].
+//!
+//! Please refer to [`If`] for usage examples.
+
 use leptos::*;
 use leptos_dom::Transparent;
 use std::cell::Cell;
@@ -30,7 +34,7 @@ api_planning! {
 /// ### Simple `if`
 /// ```rust
 /// use leptos::*;
-/// use leptos_declarative::*;
+/// use leptos_declarative::prelude::*;
 ///
 /// # let _ = create_scope(create_runtime(), |cx| {
 /// let (a, _) = create_signal(cx, true);
@@ -46,7 +50,7 @@ api_planning! {
 /// ### `if/else`
 /// ```rust
 /// use leptos::*;
-/// use leptos_declarative::*;
+/// use leptos_declarative::prelude::*;
 ///
 /// # let _ = create_scope(create_runtime(), |cx| {
 /// let (a, _) = create_signal(cx, true);
@@ -63,7 +67,7 @@ api_planning! {
 /// ### `if/else-if`
 /// ```rust
 /// use leptos::*;
-/// use leptos_declarative::*;
+/// use leptos_declarative::prelude::*;
 ///
 /// # let _ = create_scope(create_runtime(), |cx| {
 /// let (a, _) = create_signal(cx, true);
@@ -78,11 +82,34 @@ api_planning! {
 /// };
 /// # });
 /// ```
+///
+/// ### `MaybeSignal`
+///
+/// The `signal` prop of the [`If`] and [`ElseIf`] component allow
+/// taking any value that implements `Into<MaybeSignal<bool>>`.
+/// This means that you can pass in [`bool`] values that are not
+/// strictly signals, such as in the following.
+///
+/// ```rust
+/// use leptos::*;
+/// use leptos_declarative::prelude::*;
+///
+/// # let _ = create_scope(create_runtime(), |cx| {
+///
+/// view! { cx,
+/// <If signal=true>
+///   <Then>"a is true!"</Then>
+///   <ElseIf signal=false>"b is true!"</ElseIf>
+/// </If>
+/// };
+/// # });
+/// ```
 #[component]
-pub fn If<S>(
+pub fn If(
   cx: Scope,
   /// The bool signal.
-  signal: S,
+  #[prop(into)]
+  signal: MaybeSignal<bool>,
   /// The `if` conditions you would like to evaluate.
   ///
   /// Children must be any
@@ -96,10 +123,7 @@ pub fn If<S>(
   ///
   /// [`Else`] must be the last child.
   children: Box<dyn Fn(Scope) -> Fragment>,
-) -> impl IntoView
-where
-  S: Fn() -> bool + 'static,
-{
+) -> impl IntoView {
   // Memoize the signal
   let signal = create_memo(cx, move |_| signal());
 
@@ -180,16 +204,14 @@ pub fn Then(
 /// the [`Then`] component. It will render it's children iff the [`If`] signal
 /// is false and all other [`ElseIf`] signals are false and this one is true.
 #[component(transparent)]
-pub fn ElseIf<S>(
+pub fn ElseIf(
   cx: Scope,
   /// The bool signal.
-  signal: S,
+  #[prop(into)]
+  signal: MaybeSignal<bool>,
   /// What you want to show when this `else if` expression is evaluated.
   children: Box<dyn Fn(Scope) -> Fragment>,
-) -> impl IntoView
-where
-  S: Fn() -> bool + 'static,
-{
+) -> impl IntoView {
   let signal = create_memo(cx, move |_| signal());
 
   IfBlock::ElseIf { signal, children }

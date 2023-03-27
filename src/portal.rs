@@ -1,3 +1,10 @@
+//! Portals for [`leptos`].
+//!
+//! Portals allow rendering of elements somewhere
+//! completely different than where they were declared.
+//!
+//! For usage examples, please refer to [`Portal`].
+
 use leptos::*;
 use std::any::{
   Any,
@@ -50,7 +57,7 @@ struct PortalCtx(StoredValue<Vec<(TypeId, RwSignal<Option<Children>>)>>);
 /// # Examples
 /// ```rust
 /// use leptos::*;
-/// use leptos_declarative::*;
+/// use leptos_declarative::prelude::*;
 ///
 /// # let _ = create_scope(create_runtime(), |cx| {
 ///
@@ -89,7 +96,7 @@ pub fn PortalProvider(
 /// # Examples
 /// ```rust
 /// use leptos::*;
-/// use leptos_declarative::*;
+/// use leptos_declarative::prelude::*;
 ///
 /// # let _ = create_scope(create_runtime(), |cx| {
 ///
@@ -125,7 +132,7 @@ where
   let portal_ctx =
     use_context::<PortalCtx>(cx).expect(CONTEXT_NOT_FOUND_ERROR_MESSAGE);
 
-  portal_ctx.0.update(|portals| {
+  portal_ctx.0.update_value(|portals| {
     if let Some(pos) = portals
       .iter()
       .position(|(type_id, _)| *type_id == id.type_id())
@@ -145,7 +152,7 @@ where
 /// # Examples
 /// ```rust
 /// use leptos::*;
-/// use leptos_declarative::*;
+/// use leptos_declarative::prelude::*;
 ///
 /// # let _ = create_scope(create_runtime(), |cx| {
 ///
@@ -180,7 +187,7 @@ where
 
   let mut children = None;
 
-  portal_ctx.0.update(|portals| {
+  portal_ctx.0.update_value(|portals| {
     let children_signal = if let Some(pos) = portals
       .iter()
       .position(|(type_id, _)| *type_id == id.type_id())

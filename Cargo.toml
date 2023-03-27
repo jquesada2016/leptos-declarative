@@ -1,5 +1,5 @@
 [package]
-name = "leptos-declarative"
+name = "leptos_declarative"
 version = "0.1.0"
 edition = "2021"
 
@@ -7,4 +7,3 @@ edition = "2021"
 
 [dependencies]
 leptos = "0.2"
-tracing = "0.1"
