@@ -152,7 +152,7 @@ pub fn If(
     // Subscribe all <ElseIf /> blocks
     if_blocks.clone().skip(1).for_each(|(_, block)| {
       if let IfBlock::ElseIf { signal, .. } = block {
-        signal.with(|_| {});
+        signal.track();
       }
     });
 
