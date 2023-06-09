@@ -3,7 +3,7 @@
 //! Portals allow rendering of elements somewhere
 //! completely different than where they were declared.
 //!
-//! For usage examples, please refer to [`Portal`].
+//! For usage examples, please refer to [`PortalInput`].
 
 use leptos::*;
 use std::any::{
@@ -31,12 +31,12 @@ api_planning! {
 
   // Where you want portal contents to go
   view! { cx,
-    <Portal id=PortalA>
+    <PortalInput id=PortalA>
       <p>"I used a portal to get here..."</p>
-    </Portal>
-    <Portal id=PortalB>
+    </PortalInput>
+    <PortalInput id=PortalB>
       <p>"The cake was really nice"</p>
-      </Portal>
+      </PortalInput>
   }
 }
 
@@ -49,7 +49,7 @@ const CONTEXT_NOT_FOUND_ERROR_MESSAGE: &str =
 #[derive(Clone)]
 struct PortalCtx(StoredValue<Vec<(TypeId, RwSignal<Option<Children>>)>>);
 
-/// The portal provider which allows to use [`Portal`] and [`PortalOutput`].
+/// The portal provider which allows to use [`PortalInput`] and [`PortalOutput`].
 ///
 /// This must be located somewhere near the root of your component tree, above
 /// anywhere you would like to use portals.
@@ -70,9 +70,9 @@ struct PortalCtx(StoredValue<Vec<(TypeId, RwSignal<Option<Children>>)>>);
 ///       <PortalOutput id=PortalId />
 ///     </div>
 ///
-///     <Portal id=PortalId>
+///     <PortalInput id=PortalId>
 ///       <p>"I went through the portal!"</p>
-///     </Portal>
+///     </PortalInput>
 ///   </PortalProvider>
 /// };
 /// # });
@@ -80,7 +80,7 @@ struct PortalCtx(StoredValue<Vec<(TypeId, RwSignal<Option<Children>>)>>);
 #[component]
 pub fn PortalProvider(
   cx: Scope,
-  /// The rest of your app. [`Portal`] and [`PortalOutput`] can be used
+  /// The rest of your app. [`PortalInput`] and [`PortalOutput`] can be used
   /// anywhere below this point.
   children: Children,
 ) -> impl IntoView {
@@ -109,15 +109,15 @@ pub fn PortalProvider(
 ///       <PortalOutput id=PortalId />
 ///     </div>
 ///
-///     <Portal id=PortalId>
+///     <PortalInput id=PortalId>
 ///       <p>"I went through the portal!"</p>
-///     </Portal>
+///     </PortalInput>
 ///   </PortalProvider>
 /// };
 /// # });
 /// ```
 #[component]
-pub fn Portal<T>(
+pub fn PortalInput<T>(
   cx: Scope,
   /// The type used as an `id`. This must match the `id` of the
   /// corresponding [`PortalOutput`].
@@ -165,9 +165,9 @@ where
 ///       <PortalOutput id=PortalId />
 ///     </div>
 ///
-///     <Portal id=PortalId>
+///     <PortalInput id=PortalId>
 ///       <p>"I went through the portal!"</p>
-///     </Portal>
+///     </PortalInput>
 ///   </PortalProvider>
 /// };
 /// # });
@@ -176,7 +176,7 @@ where
 pub fn PortalOutput<T>(
   cx: Scope,
   /// The type used as an `id`. This must match the `id` of the
-  /// corresponding [`Portal`].
+  /// corresponding [`PortalInput`].
   id: T,
 ) -> impl IntoView
 where

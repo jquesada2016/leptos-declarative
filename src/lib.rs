@@ -7,7 +7,7 @@
 //! This crate provides 2 main components
 //!
 //! - [`If`](if_::If)
-//! - [`Portal`](portal::Portal)
+//! - [`PortalInput`](portal::PortalInput)
 //!
 //! # Usage
 //! For more usage examples, please refer to the respective
@@ -48,9 +48,9 @@
 //!       <PortalOutput id=PortalId />
 //!     </div>
 //!
-//!     <Portal id=PortalId>
+//!     <PortalInput id=PortalId>
 //!       <p>"I went through the portal!"</p>
-//!     </Portal>
+//!     </PortalInput>
 //!   </PortalProvider>
 //! };
 //! # });
