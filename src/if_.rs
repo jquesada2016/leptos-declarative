@@ -125,7 +125,7 @@ pub fn If(
   children: Box<dyn Fn(Scope) -> Fragment>,
 ) -> impl IntoView {
   // Memoize the signal
-  let signal = create_memo(cx, move |_| signal());
+  let signal = create_memo(cx, move |_| signal.get());
 
   let children = children(cx);
 
@@ -156,7 +156,7 @@ pub fn If(
       }
     });
 
-    if signal() {
+    if signal.get() {
       if last_rendered_block.get() != Some(0) {
         last_rendered_block.set(Some(0));
 
@@ -212,7 +212,7 @@ pub fn ElseIf(
   /// What you want to show when this `else if` expression is evaluated.
   children: Box<dyn Fn(Scope) -> Fragment>,
 ) -> impl IntoView {
-  let signal = create_memo(cx, move |_| signal());
+  let signal = create_memo(cx, move |_| signal.get());
 
   IfBlock::ElseIf { signal, children }
 }
@@ -255,7 +255,7 @@ pub enum IfBlock {
 impl IfBlock {
   fn is_true(&self) -> bool {
     if let Self::ElseIf { signal, .. } = self {
-      signal()
+      signal.get()
     } else {
       self.is_else()
     }

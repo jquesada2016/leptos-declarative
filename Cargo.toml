@@ -1,6 +1,6 @@
 [package]
 name = "leptos_declarative"
-version = "0.2.0"
+version = "0.2.1"
 edition = "2021"
 description = "Declarative components for leptos."
 homepage = "https://github.com/jquesada2016/leptos-declarative"
