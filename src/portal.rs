@@ -40,8 +40,6 @@ api_planning! {
   }
 }
 
-type Children = Box<dyn Fn(Scope) -> Fragment>;
-
 const CONTEXT_NOT_FOUND_ERROR_MESSAGE: &str =
   "failed to find `PortalCtx`, make sure you are using `<PortalProvider />` \
    somewhere near the root of the app";
