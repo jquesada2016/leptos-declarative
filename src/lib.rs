@@ -18,18 +18,18 @@
 //! use leptos::*;
 //! use leptos_declarative::prelude::*;
 //!
-//! # let _ = create_scope(create_runtime(), |cx| {
-//! let (a, _) = create_signal(cx, true);
-//! let (b, _) = create_signal(cx, false);
+//! # let runtime = create_runtime();
+//! let (a, _) = create_signal(true);
+//! let (b, _) = create_signal(false);
 //!
-//! view! { cx,
+//! view! {
 //! <If signal=a>
 //!   <Then>"A is true!"</Then>
 //!   <ElseIf signal=b>"B is true!"</ElseIf>
 //!   <Else>"Both A and B are false!"</Else>
 //! </If>
 //! };
-//! # });
+//! # runtime.dispose();
 //! ```
 //!
 //! ## Portal
@@ -37,11 +37,11 @@
 //! use leptos::*;
 //! use leptos_declarative::prelude::*;
 //!
-//! # let _ = create_scope(create_runtime(), |cx| {
+//! # let runtime = create_runtime();
 //!
 //! struct PortalId;
 //!
-//! view! { cx,
+//! view! {
 //!   <PortalProvider>
 //!     <div>
 //!       <h1>"Portal goes here!"</h1>
@@ -53,7 +53,7 @@
 //!     </PortalInput>
 //!   </PortalProvider>
 //! };
-//! # });
+//! # runtime.dispose();
 //! ```
 
 #[macro_use]
@@ -63,8 +63,5 @@ pub mod portal;
 
 /// Convenient import of all components.
 pub mod prelude {
-  pub use crate::{
-    if_::*,
-    portal::*,
-  };
+    pub use crate::{if_::*, portal::*};
 }

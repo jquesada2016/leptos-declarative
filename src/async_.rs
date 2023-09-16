@@ -1,5 +1,5 @@
 api_planning! {
-  view! { cx,
+  view! {
     <Await>
       <Ready>
       </Ready>

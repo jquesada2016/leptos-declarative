@@ -14,4 +14,4 @@ keywords = ["leptos", "web", "framework", "reactive", "isomorphic"]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-leptos = "0.3"
+leptos = { version = "0.5.0", features = ["csr"] }
